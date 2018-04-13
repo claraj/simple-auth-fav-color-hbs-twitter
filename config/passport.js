@@ -128,11 +128,9 @@ module.exports = function(passport) {
 
         User.findOne( { 'twitter.id' : profile.id }, function (err, user) {
 
-          // Database error
-          if (err) { return done(err); }
+          if (err) { return done(err); }  // Database error
 
-          // User already exists in our database
-          if (user) { return done(null, user); }
+          if (user) { return done(null, user); }  // User already exists in our database
 
           // User does not exist in our database, create document
           // containing their Twitter authentication info and profile
@@ -150,10 +148,8 @@ module.exports = function(passport) {
             if (err) { return done(err); }
             return done(null, newUser);
           });
-
         });
     });
-
   }));
 
 }; // This is the end of module.exports = function(passport) { .... at the start

@@ -17,8 +17,8 @@ var users = require('./routes/users');
 var app = express();
 
 var mongo_url = process.env.MONGO_URL;
-mongoose.Promise = global.Promise;
-mongoose.connect(mongo_url, { useMongoClient: true })
+
+mongoose.connect(mongo_url)
   .then( () => { console.log('Connected to MongoDB'); })
   .catch( (err) => { console.log('Error connecting', err);  });
 
@@ -35,17 +35,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // For saving sessions persistently, users will stay logged in if server reboots
-var store = new MongoDBStore( {uri : mongo_url, collection: 'sessions'}, function(err){
-  if (err) {
-    console.log('Error, can\'t connect to MongoDB to store sessions', err);
-  }
-})
-
 app.use(session({
-    secret: 'replace with long random string',
-    resave: true,
-    saveUninitialized: true,
-    store: store
+  secret: 'replace me with long random string',
+  resave: true,
+  saveUninitialized: true,
+  store: new MongoDBStore( { uri: mongo_url })
 }));
 
 app.use(passport.initialize());
