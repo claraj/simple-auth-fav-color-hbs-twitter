@@ -22,7 +22,7 @@ router.get('/signup', function(req, res, next) {
 router.post('/login', passport.authenticate('local-login', {
   successRedirect: '/secret',
   failureRedirect: '/login',
-  failureFlash: '/true'
+  failureFlash: true
 }));
 
 
